@@ -4,45 +4,32 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
+
 public class movement : MonoBehaviour
 {
     Rigidbody2D rb;
-    CanvasGroupFader fadeController;
+    public levelManager levelManager;
     float horizontalDirection, verticalDirection;
     public float maxSpeed = 5f;
     public float acceleration = 10f;
     public float deceleration = 20f;
-    public int level = 1;
-    bool isTransitioning;
+    Vector3 startingPos = new Vector3(2, 4, 0);
+
     // Current movement speed and direction for this frame.
     Vector2 velocity;
     Vector2 inputDirection;
+
     private void OnTriggerEnter2D(Collider2D other) // handles collision
     {
-        if (!isTransitioning && other.CompareTag("wintilemap")) // detects win condition
+        if (!levelManager.isTransitioning && other.CompareTag("wintilemap")) // detects win condition
         {
-            StartCoroutine(LoadNextLevelAfterFade());
+            StartCoroutine(levelManager.LoadNextLevel());
         }
     }
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        fadeController = FindObjectOfType<CanvasGroupFader>();
-    }
-
-    IEnumerator LoadNextLevelAfterFade()
-    {
-        isTransitioning = true;
-        enabled = false;
-
-        if (fadeController != null)
-        {
-            fadeController.FadeOut();
-            yield return new WaitForSecondsRealtime(fadeController.FadeOutDuration);
-        }
-
-        level++;
-        SceneManager.LoadScene("Level " + level);
+        transform.position = startingPos;
     }
 
     void Update()

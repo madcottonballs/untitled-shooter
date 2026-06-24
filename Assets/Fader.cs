@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class CanvasGroupFader : MonoBehaviour
+public class Fader : MonoBehaviour
 {
     [SerializeField] float fadeInDuration = 1.5f;
     [SerializeField] float fadeOutDuration = 1f;
@@ -25,17 +25,6 @@ public class CanvasGroupFader : MonoBehaviour
         rectTransform.offsetMax = Vector2.zero;
 
     }
-    void Start()
-    {
-        // The overlay starts fully visible, then fades out on scene load.
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.interactable = false;
-
-        // Kick off the first fade immediately when the scene starts.
-        FadeIn();
- 
-    }
     public float FadeOutDuration
     {
         get { return fadeOutDuration; }
@@ -43,6 +32,11 @@ public class CanvasGroupFader : MonoBehaviour
 
     public void FadeIn()
     {
+        // The overlay starts fully visible, then fades out on scene load.
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = false;
+
         // FadeIn means "show the game", so alpha goes to 0.
         StartFade(0f, fadeInDuration);
     }

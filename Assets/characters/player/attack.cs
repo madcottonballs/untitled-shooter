@@ -11,8 +11,12 @@ public class attack : MonoBehaviour
 
     Rigidbody2D rb;
     movement playerMovement;
-    Coroutine lungeRoutine;
-    bool isLunging;
+
+    public bool isLunging;
+    bool isRecovering;
+    float lungeElapsed;
+    Vector2 lungeStartPosition;
+    Vector2 lungeEndPosition;
     Vector2 facingDirection = Vector2.right;
 
     void Awake()
@@ -23,78 +27,73 @@ public class attack : MonoBehaviour
 
     void Update()
     {
-        // Press Space to trigger the lunge. Replace this with your own input if needed.
-        if (Input.GetKeyDown(KeyCode.Q) && !isLunging)
+        // Press Q to trigger the lunge.
+        if (Input.GetKeyDown(KeyCode.Q) && !isLunging && !isRecovering)
         {
             StartLunge();
         }
 
-        // Keep the last facing direction so the lunge still works when standing still.
-        if (!isLunging && playerMovement.velocity.sqrMagnitude > 0.001f)
+        // Remember the last movement direction so the lunge has a sensible direction
+        // even if the player is standing still when the key is pressed.
+        if (!isLunging && !isRecovering && playerMovement != null && playerMovement.velocity.sqrMagnitude > 0.001f)
         {
             facingDirection = playerMovement.velocity.normalized;
         }
     }
 
-    public void StartLunge()
+    void FixedUpdate()
     {
-        if (lungeRoutine != null)
+        if (!isLunging) // means all following code in this function only runs if lunging
         {
-            StopCoroutine(lungeRoutine);
+            return;
         }
 
-        lungeRoutine = StartCoroutine(Lunge());
+        lungeElapsed += Time.fixedDeltaTime;
+
+        float progress = Mathf.Clamp01(lungeElapsed / lungeDuration);
+        float easedProgress = lungeCurve.Evaluate(progress);
+
+        // Move the Rigidbody through the physics step so collision resolution stays stable.
+        rb.MovePosition(Vector2.Lerp(lungeStartPosition, lungeEndPosition, easedProgress));
+
+        if (progress >= 1f)
+        {
+            isLunging = false;
+            StartCoroutine(FinishLunge());
+        }
     }
 
-    IEnumerator Lunge()
+    void StartLunge()
     {
+        Vector2 direction = facingDirection.sqrMagnitude > 0.001f ? facingDirection.normalized : Vector2.right;
+
+        lungeStartPosition = rb.position;
+        lungeEndPosition = lungeStartPosition + direction * lungeDistance;
+        lungeElapsed = 0f;
         isLunging = true;
 
-        // Use the last known movement direction, or default to right if the player was idle.
-        Vector2 direction = facingDirection.sqrMagnitude > 0.001f ? facingDirection.normalized : Vector2.right;
-        Vector2 startPosition = rb.position;
-        Vector2 targetPosition = startPosition + direction * lungeDistance;
-
-        // Lock out normal movement for the duration of the lunge.
+        // Stop the normal movement script so it does not fight the lunge motion.
         if (playerMovement != null)
         {
             playerMovement.enabled = false;
         }
 
-        // First half: move forward quickly with easing.
-        yield return MoveBetweenPoints(startPosition, targetPosition, lungeDuration);
+        // Clear existing motion so the lunge starts cleanly.
+        rb.velocity = Vector2.zero;
+    }
 
-        // do damage to enemy
+    IEnumerator FinishLunge()
+    {
+        isRecovering = true;
 
-        // Second half: optional recovery pause so the motion feels intentional instead of snappy.
+        // Optional small pause so the lunge feels intentional instead of instant.
         yield return new WaitForSecondsRealtime(lungeRecoveryDuration);
 
-        // Re-enable regular movement after the lunge finishes.
         if (playerMovement != null)
         {
             playerMovement.enabled = true;
         }
 
-        isLunging = false;
-        lungeRoutine = null;
-    }
-
-    IEnumerator MoveBetweenPoints(Vector2 startPosition, Vector2 endPosition, float duration)
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.fixedDeltaTime;
-            float progress = Mathf.Clamp01(elapsedTime / duration);
-
-            // Ease the motion so the lunge starts fast and slows near the end.
-            float easedProgress = lungeCurve.Evaluate(progress);
-            rb.MovePosition(Vector2.Lerp(startPosition, endPosition, easedProgress));
-
-            yield return new WaitForFixedUpdate();
-        }
-
-        rb.MovePosition(endPosition);
+        isRecovering = false;
     }
 }

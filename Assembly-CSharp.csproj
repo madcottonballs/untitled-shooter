@@ -64,10 +64,11 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.17f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\enemyDamage.cs" />
     <Compile Include="Assets\levelManager.cs" />
     <Compile Include="Assets\characters\type1enemy\t1enemyMovement.cs" />
+    <Compile Include="Assets\characters\type1enemy\enemyVision.cs" />
     <Compile Include="Assets\Fader.cs" />
+    <Compile Include="Assets\characters\type1enemy\enemyAttack.cs" />
     <Compile Include="Assets\characters\player\movement.cs" />
     <Compile Include="Assets\characters\player\attack.cs" />
   </ItemGroup>

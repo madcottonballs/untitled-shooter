@@ -6,15 +6,19 @@ public class t1enemyMovement : MonoBehaviour
     public Transform[] points;
     public float speed = 2f;
     public attack Player;
+    public bool awareOfPlayer = false;
 
     Rigidbody2D rb;
     int index;
     int patrolDirection = 1;
-    bool awareOfPlayer = false;
     [SerializeField] int health; // meant to be dependent on the scene
+    Transform player;
+    float lastPlayerDistance;
 
     void Awake()
     {
+        GameObject temp = GameObject.FindGameObjectWithTag("Player");  
+        player = temp.GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -25,15 +29,46 @@ public class t1enemyMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (points == null || points.Length == 0 || awareOfPlayer) // if there's no points or aware of player, stop patrol
+        if (points == null || points.Length == 0) // if there's no points stop patrol
         {
+            return;
+        }
+        if (awareOfPlayer) // if aware of player, stop patrol and stare at player
+        {
+            if (player != null)
+            {
+                // Measure whether the player is moving away from us this frame.
+                float currentPlayerDistance = Vector2.Distance(rb.position, player.position);
+
+                // Keep the enemy facing the player every physics frame.
+                Vector2 direction = (Vector2)player.position - rb.position;
+                if (direction.sqrMagnitude > 0.0001f)
+                {
+                    transform.right = direction.normalized;
+                }
+
+                // Only follow if the player is increasing the distance between us.
+                if (currentPlayerDistance > lastPlayerDistance)
+                {
+                    rb.MovePosition(Vector2.MoveTowards(rb.position, player.position, speed * Time.fixedDeltaTime));
+                }
+
+                lastPlayerDistance = currentPlayerDistance;
+            }
             return;
         }
 
         Transform target = points[index];
+        Vector2 movementDirection = ((Vector2)target.position - rb.position).normalized;
 
         // Move one physics step toward the current waypoint.
         rb.MovePosition(Vector2.MoveTowards(rb.position, target.position, speed * Time.fixedDeltaTime));
+
+        // Face the direction of travel so the enemy visually turns while patrolling.
+        if (movementDirection.sqrMagnitude > 0.0001f)
+        {
+            transform.right = movementDirection;
+        }
 
         // Once we get close enough, switch to the next waypoint.
         if (Vector2.Distance(rb.position, target.position) < 0.1f)
@@ -60,6 +95,15 @@ public class t1enemyMovement : MonoBehaviour
             {
                 health -= Player.lungeDamage;
             }
+        }
+    }
+
+    public void Alert()
+    {
+        awareOfPlayer = true;
+        if (player != null)
+        {
+            lastPlayerDistance = Vector2.Distance(rb.position, player.position);
         }
     }
 

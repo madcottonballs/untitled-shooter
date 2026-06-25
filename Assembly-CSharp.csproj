@@ -68,7 +68,9 @@
     <Compile Include="Assets\characters\type1enemy\t1enemyMovement.cs" />
     <Compile Include="Assets\characters\type1enemy\enemyVision.cs" />
     <Compile Include="Assets\Fader.cs" />
+    <Compile Include="Assets\gun.cs" />
     <Compile Include="Assets\characters\type1enemy\enemyAttack.cs" />
+    <Compile Include="Assets\bullet\bullet.cs" />
     <Compile Include="Assets\characters\player\movement.cs" />
     <Compile Include="Assets\characters\player\attack.cs" />
   </ItemGroup>

@@ -67,7 +67,6 @@ public class t1enemyMovement : MonoBehaviour
                     {
                         isFollowingPlayer = false;
                     }
-                    Debug.Log(isFollowingPlayer);
                 }
 
                 if (isFollowingPlayer)

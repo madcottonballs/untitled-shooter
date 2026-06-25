@@ -19,11 +19,16 @@ public class attack : MonoBehaviour
     Vector2 lungeEndPosition;
     Vector2 facingDirection = Vector2.right;
     public int lungeDamage = 100;
+    public bool hasGun = false;
+
+    SpriteRenderer gunSprite;
+    [SerializeField] gun gun;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = GetComponent<movement>();
+        gunSprite = gun.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -39,6 +44,20 @@ public class attack : MonoBehaviour
         if (!isLunging && !isRecovering && playerMovement != null && playerMovement.velocity.sqrMagnitude > 0.001f)
         {
             facingDirection = playerMovement.velocity.normalized;
+        }
+
+        if (hasGun)
+        {
+            gunSprite.enabled = true;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                gun.shoot();
+            }
+        }
+        else
+        {
+            gunSprite.enabled = false;
         }
     }
 

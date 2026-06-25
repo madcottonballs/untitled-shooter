@@ -9,3 +9,7 @@ weapons:
     lunge:
         does 100 damage
         press q
+loading in new sprites:
+    set its pixels per unit to 32
+    set filter mode to point no filter
+    set compression to none

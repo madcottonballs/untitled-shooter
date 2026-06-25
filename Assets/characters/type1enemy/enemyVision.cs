@@ -33,10 +33,17 @@ public class enemyVision : MonoBehaviour
         // Rebuild the visible cone every frame so it follows enemy rotation and wall hits.
         UpdateConeMesh();
         // Check whether the player is inside the cone and not blocked by walls.
-        if (DetectPlayer())
+        bool playerVisible = DetectPlayer();
+        if (enemyMovement != null)
+        {
+            enemyMovement.SetPlayerInVision(playerVisible);
+        }
+
+        if (playerVisible)
         {
             coneColor = red;
-        } else
+        }
+        else
         {
             coneColor = yellow;
         }

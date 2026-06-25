@@ -11,6 +11,7 @@ public class t1enemyMovement : MonoBehaviour
     int index;
     int patrolDirection = 1;
     bool awareOfPlayer = false;
+    [SerializeField] int health; // meant to be dependent on the scene
 
     void Awake()
     {
@@ -19,6 +20,11 @@ public class t1enemyMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (health <= 0) // kills the sprite
+        {
+            Destroy(gameObject);
+        }
+
         if (points == null || points.Length == 0 || awareOfPlayer) // if there's no points or aware of player, stop patrol
         {
             return;
@@ -47,11 +53,13 @@ public class t1enemyMovement : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other) // handles collision
     {
-        if (!Player.isLunging && other.CompareTag("Player")) // detects collision and checks it is the player and they are lunging
+        if (other.CompareTag("Player"))
         {
-            awareOfPlayer = true; // if they're hurt by the player, they see him
-
-            
+            awareOfPlayer = true; // if they're touched by the player, they see him
+            if (Player.isLunging) // only take damage during the lunge
+            {
+                health -= Player.lungeDamage;
+            }
         }
     }
 

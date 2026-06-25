@@ -18,6 +18,7 @@ public class attack : MonoBehaviour
     Vector2 lungeStartPosition;
     Vector2 lungeEndPosition;
     Vector2 facingDirection = Vector2.right;
+    public int lungeDamage = 100;
 
     void Awake()
     {

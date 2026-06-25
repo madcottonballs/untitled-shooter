@@ -16,7 +16,7 @@ public class movement : MonoBehaviour
     Vector3 startingPos = new Vector3(2, 4, 0);
 
     // Current movement speed and direction for this frame.
-    Vector2 velocity;
+    public Vector2 velocity;
     Vector2 inputDirection;
 
     private void OnTriggerEnter2D(Collider2D other) // handles collision

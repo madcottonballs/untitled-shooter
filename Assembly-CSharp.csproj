@@ -65,9 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\levelManager.cs" />
+    <Compile Include="Assets\characters\type1enemy\t1enemyMovement.cs" />
     <Compile Include="Assets\Fader.cs" />
-    <Compile Include="Assets\attack.cs" />
-    <Compile Include="Assets\movement.cs" />
+    <Compile Include="Assets\characters\player\movement.cs" />
+    <Compile Include="Assets\characters\player\attack.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

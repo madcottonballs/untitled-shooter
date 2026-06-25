@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class attack : MonoBehaviour
+public class t1enemyMovement : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

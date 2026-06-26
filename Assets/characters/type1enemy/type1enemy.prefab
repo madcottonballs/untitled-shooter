@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4279978814983508292}
   - component: {fileID: 6035398863432675919}
-  - component: {fileID: -740063431849081238}
   - component: {fileID: 433292494508203834}
   - component: {fileID: -8771172232384562764}
   - component: {fileID: -731946023157554332}
+  - component: {fileID: -740063431849081238}
   - component: {fileID: -3411728881215654654}
   - component: {fileID: -2408007404597898856}
   m_Layer: 0
@@ -90,27 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-740063431849081238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582192325484480440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4804894e75d32743af09b981e8324d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  points: []
-  speed: 2
-  Player: {fileID: 0}
-  awareOfPlayer: 0
-  health: 0
-  fleeThreshold: 0.1
-  distanceThreshold: 0.02
-  linearDrag: 8
-  playerInVision: 0
 --- !u!50 &433292494508203834
 Rigidbody2D:
   serializedVersion: 4
@@ -208,6 +187,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &-740063431849081238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582192325484480440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4804894e75d32743af09b981e8324d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: []
+  speed: 2
+  Player: {fileID: 0}
+  awareOfPlayer: 0
+  health: 0
+  fleeThreshold: 0.1
+  distanceThreshold: 0.02
+  linearDrag: 8
+  playerInVision: 0
 --- !u!114 &-3411728881215654654
 MonoBehaviour:
   m_ObjectHideFlags: 0

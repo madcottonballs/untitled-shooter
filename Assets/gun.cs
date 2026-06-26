@@ -10,7 +10,7 @@ public class gun : MonoBehaviour
     [SerializeField] float bulletSpeed = 12f;
     [SerializeField] float bulletLifetime = 2f;
     [SerializeField] float bulletSpawnOffset = 0.2f;
-    [SerializeField] LayerMask bulletDestroyLayers;
+    [SerializeField] int bulletDamage = 250;
 
     void Update()
     {
@@ -65,16 +65,12 @@ public class gun : MonoBehaviour
         Vector3 spawnPosition = transform.position + transform.right * bulletSpawnOffset;
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, transform.rotation);
 
-        // Make sure the bullet can actually move and collide even if the prefab is just a sprite.
+        // Make sure the bullet can actually move and collide.
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-        bullet bulletLogic = bullet.GetComponent<bullet>();
-        if (bulletLogic == null)
-        {
-            bulletLogic = bullet.AddComponent<bullet>();
-        }
-        bulletLogic.Initialize(bulletDestroyLayers);
+        bullet bulletScript = bullet.GetComponent<bullet>();
 
         bulletRb.velocity = (Vector2)transform.right * bulletSpeed;
+        bulletScript.damage = bulletDamage; // sets the bullets damage to the bulletDamage
 
 
         Destroy(bullet, bulletLifetime);

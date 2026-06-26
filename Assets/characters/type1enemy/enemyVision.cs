@@ -3,23 +3,23 @@ using UnityEngine;
 public class enemyVision : MonoBehaviour
 {
     // How far the enemy can see and how wide the field of view is.
-    [SerializeField] float viewDistance = 100f;
-    [SerializeField] float viewAngle = 60f;
+    [SerializeField] float viewDistance = 100f; // Maximum vision range.
+    [SerializeField] float viewAngle = 60f; // Total cone angle in degrees.
     // More segments makes the cone smoother, but costs a bit more to rebuild.
-    [SerializeField] int coneSegments = 24;
+    [SerializeField] int coneSegments = 24; // Number of slices used to draw the cone.
     // Layers that block line of sight and clip the cone shape.
-    [SerializeField] LayerMask obstacleMask;
+    [SerializeField] LayerMask obstacleMask; // Wall and obstacle layers.
     // Base color for the cone. The alpha controls how transparent it looks.
-    static float transparency = 0.12f;
-    static Color yellow = new Color(1f, 1f, 0f, transparency);
-    static Color red = new Color(1f, 0f, 0f, transparency);
-    [SerializeField] Color coneColor = yellow;
+    static float transparency = 0.12f; // Shared alpha for the cone colors.
+    static Color yellow = new Color(1f, 1f, 0f, transparency); // Default idle cone color.
+    static Color red = new Color(1f, 0f, 0f, transparency); // Color shown when player is visible.
+    [SerializeField] Color coneColor = yellow; // Current display color for the cone.
 
-    t1enemyMovement enemyMovement;
-    Mesh coneMesh;
-    MeshFilter coneMeshFilter;
-    MeshRenderer coneMeshRenderer;
-    Material coneRuntimeMaterial;
+    t1enemyMovement enemyMovement; // Parent enemy movement script.
+    Mesh coneMesh; // Procedurally generated cone mesh.
+    MeshFilter coneMeshFilter; // MeshFilter for the cone child object.
+    MeshRenderer coneMeshRenderer; // MeshRenderer for drawing the cone.
+    Material coneRuntimeMaterial; // Runtime material instance used by the cone.
 
     void Awake()
     {

@@ -3,23 +3,23 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class t1enemyMovement : MonoBehaviour
 {
-    public Transform[] points;
-    public float speed = 2f;
-    public attack Player;
-    public bool awareOfPlayer = false;
+    public Transform[] points; // Patrol waypoints.
+    public float speed = 2f; // Patrol and chase movement speed.
+    public attack Player; // Reference to the player's attack script.
+    public bool awareOfPlayer = false; // True once the enemy has noticed the player.
 
-    Rigidbody2D rb;
-    int index;
-    int patrolDirection = 1;
-    [SerializeField] int health; // meant to be dependent on the scene
-    [SerializeField] float fleeThreshold = 0.1f;
-    [SerializeField] float distanceThreshold = 0.02f;
-    [SerializeField] float linearDrag = 8f;
-    movement playerMovement;
-    Transform player;
-    bool isFollowingPlayer;
-    float lastPlayerDistance;
-    public bool playerInVision;
+    Rigidbody2D rb; // Cached Rigidbody2D for movement.
+    int index; // Current patrol waypoint index.
+    int patrolDirection = 1; // Patrol direction, 1 forward and -1 backward.
+    [SerializeField] public int health; // Enemy health for this scene.
+    [SerializeField] float fleeThreshold = 0.1f; // How strongly the player must move away to trigger chase.
+    [SerializeField] float distanceThreshold = 0.02f; // Small buffer to ignore tiny distance changes.
+    [SerializeField] float linearDrag = 8f; // Drag used to slow knockback from collisions.
+    movement playerMovement; // Cached player movement script.
+    Transform player; // Cached player transform.
+    bool isFollowingPlayer; // True while the enemy is actively chasing.
+    float lastPlayerDistance; // Player distance from the previous physics frame.
+    public bool playerInVision; // True while the player is inside the vision cone.
 
     void Awake()
     {

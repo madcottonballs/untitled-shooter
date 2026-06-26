@@ -20,9 +20,11 @@ public class attack : MonoBehaviour
     Vector2 facingDirection = Vector2.right;
     public int lungeDamage = 100;
     public bool hasGun = false;
-
+    
     SpriteRenderer gunSprite;
     [SerializeField] gun gun;
+
+    public int health = 325;
 
     void Awake()
     {

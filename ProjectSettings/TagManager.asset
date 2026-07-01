@@ -9,6 +9,7 @@ TagManager:
   - enemy
   - bullet
   - wall
+  - level manager
   layers:
   - Default
   - TransparentFX

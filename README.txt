@@ -10,6 +10,8 @@ how to create a level:
             tick "Has Gun" to true,
             set a custom reload time,
             and set a custom stun time (time the guard takes to start shooting after discovering the player).
+        In the "t1enemyMovement" script in the inspector,
+            tick "Drop Weapon On Death" to your choosing.
 weapons:
     lunge:
         does 100 damage

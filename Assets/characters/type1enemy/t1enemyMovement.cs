@@ -1,5 +1,9 @@
 using UnityEngine;
 
+// this script handled movement
+// and health
+// health code is managed in FixedUpdate()
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class t1enemyMovement : MonoBehaviour
 {
@@ -15,11 +19,13 @@ public class t1enemyMovement : MonoBehaviour
     [SerializeField] float fleeThreshold = 0.1f; // How strongly the player must move away to trigger chase.
     [SerializeField] float distanceThreshold = 0.02f; // Small buffer to ignore tiny distance changes.
     [SerializeField] float linearDrag = 8f; // Drag used to slow knockback from collisions.
+    [SerializeField] bool dropWeaponOnDeath = true;
     movement playerMovement; // Cached player movement script.
     Transform player; // Cached player transform.
     bool isFollowingPlayer; // True while the enemy is actively chasing.
     float lastPlayerDistance; // Player distance from the previous physics frame.
     public bool playerInVision; // True while the player is inside the vision cone.
+    [SerializeField] GameObject gunCollectablePrefab; // spawned when enemy dies
 
     void Awake()
     {
@@ -40,7 +46,7 @@ public class t1enemyMovement : MonoBehaviour
     {
         if (health <= 0) // kills the sprite
         {
-            Destroy(gameObject);
+            die();
         }
 
         if (awareOfPlayer) // if aware of player, stop patrol and stare at player
@@ -148,6 +154,23 @@ public class t1enemyMovement : MonoBehaviour
         }
     }
 
+    private void die()
+    {
+        if (dropWeaponOnDeath)
+        {
+            Transform gunTransform = transform.Find("gun");
+            if (gunTransform != null && gunCollectablePrefab != null)
+            {
+                GameObject droppedGun = Instantiate(gunCollectablePrefab, gunTransform.position, gunTransform.rotation);
+                gunCollectable collectable = droppedGun.GetComponent<gunCollectable>();
+                if (collectable != null)
+                {
+                    collectable.InitializeFromGun(gunTransform, gunTransform.GetComponent<SpriteRenderer>());
+                }
+            }
+        }
+        Destroy(gameObject);
+    }
     public void SetPlayerInVision(bool visible)
     {
         playerInVision = visible;

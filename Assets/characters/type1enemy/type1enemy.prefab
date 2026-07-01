@@ -207,7 +207,9 @@ MonoBehaviour:
   fleeThreshold: 0.1
   distanceThreshold: 0.02
   linearDrag: 8
+  dropWeaponOnDeath: 1
   playerInVision: 0
+  gunCollectablePrefab: {fileID: 221893693632000564, guid: be33bacd0022bbe45aae029840da73d2, type: 3}
 --- !u!114 &-3411728881215654654
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -35,7 +35,14 @@ public class attack : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = GetComponent<movement>();
-        gunSprite = gun.GetComponent<SpriteRenderer>();
+        if (hasGun)
+        {
+            gunSprite = gun.GetComponent<SpriteRenderer>();            
+        }
+        else
+        {
+            gunSprite = null;
+        }
 
         GameObject LevelManager = GameObject.FindGameObjectWithTag("level manager");
         if (LevelManager != null)
@@ -74,11 +81,7 @@ public class attack : MonoBehaviour
                 gun.shoot();
             }
         }
-        else
-        {
-            gunSprite.enabled = false;
-        }
-
+        
         if (health <= 0)
         {
             die();

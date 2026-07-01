@@ -20,7 +20,7 @@ public class attack : MonoBehaviour
     Vector2 facingDirection = Vector2.right;
     public int lungeDamage = 100;
     public bool hasGun = false;
-    
+
     SpriteRenderer gunSprite;
     [SerializeField] gun gun;
 
@@ -35,6 +35,7 @@ public class attack : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(health);
         // Press Q to trigger the lunge.
         if (Input.GetKeyDown(KeyCode.Q) && !isLunging && !isRecovering)
         {

@@ -5,6 +5,7 @@ how to create a level:
         to move waypoints in scene mode, press w
 
         assign enemy health in the inspector.
+        assign enemy a gun by dragging the gun prefab under the enemy in the hierarchy.
 weapons:
     lunge:
         does 100 damage

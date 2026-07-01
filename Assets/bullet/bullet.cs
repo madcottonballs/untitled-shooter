@@ -3,6 +3,12 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     public int damage = 250; 
+    [SerializeField] float spawnStepForward = 0.75f;
+
+    void Start()
+    {
+        transform.position += transform.right * spawnStepForward;
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {

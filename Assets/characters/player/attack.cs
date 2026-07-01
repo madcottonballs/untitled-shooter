@@ -1,6 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
+// the attack script oversees player attacks like lunging and shooting
+// as well as the player health system and death.
+// death is monitored under Update() where if health is <= 0, die() is called.
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class attack : MonoBehaviour
 {
@@ -23,6 +27,7 @@ public class attack : MonoBehaviour
 
     SpriteRenderer gunSprite;
     [SerializeField] gun gun;
+    levelManager levelManager;
 
     public int health = 325;
 
@@ -31,6 +36,17 @@ public class attack : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerMovement = GetComponent<movement>();
         gunSprite = gun.GetComponent<SpriteRenderer>();
+
+        GameObject LevelManager = GameObject.FindGameObjectWithTag("level manager");
+        if (LevelManager != null)
+        {
+            levelManager = LevelManager.GetComponent<levelManager>();
+        } 
+        else
+        {
+            Debug.Log("Level Manager reference not found in attack.cs");
+        }
+
     }
 
     void Update()
@@ -62,6 +78,11 @@ public class attack : MonoBehaviour
         {
             gunSprite.enabled = false;
         }
+
+        if (health <= 0)
+        {
+            die();
+        }
     }
 
     void FixedUpdate()
@@ -86,6 +107,11 @@ public class attack : MonoBehaviour
         }
     }
 
+    public void die()
+    {
+        playerMovement.enabled = false; // stop player movement when dead
+        StartCoroutine(levelManager.ReloadCurrentLevel());
+    }
     void StartLunge()
     {
         Vector2 direction = facingDirection.sqrMagnitude > 0.001f ? facingDirection.normalized : Vector2.right;

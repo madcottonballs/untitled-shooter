@@ -8,12 +8,12 @@ using UnityEngine.SceneManagement;
 public class movement : MonoBehaviour
 {
     Rigidbody2D rb;
-    public levelManager levelManager;
     float horizontalDirection, verticalDirection;
     public float maxSpeed = 5f;
     public float acceleration = 10f;
     public float deceleration = 20f;
     Vector3 startingPos = new Vector3(2, 4, 0);
+    levelManager levelManager;
 
     // Current movement speed and direction for this frame.
     public Vector2 velocity;
@@ -30,6 +30,17 @@ public class movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         transform.position = startingPos;
+
+        GameObject LevelManager = GameObject.FindGameObjectWithTag("level manager");
+        if (LevelManager != null)
+        {
+            levelManager = LevelManager.GetComponent<levelManager>();
+        }
+        else
+        {
+            Debug.Log("Level Manager reference not found in movement.cs");
+        }
+
     }
 
     void Update()

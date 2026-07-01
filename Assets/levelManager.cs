@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting.Dependencies.Sqlite;
-using Unity.VisualScripting;
 
 public class levelManager : MonoBehaviour
 {
@@ -13,12 +10,13 @@ public class levelManager : MonoBehaviour
     public CinemachineVirtualCamera cam;
     [SerializeField] Fader fader;
     float zoomStart = 6.5f;
+    
     [SerializeField] float zoomTarget = 3.5f;
     [SerializeField] float zoomDuration = 3.5f;
     public bool isTransitioning; // used by the player so the win condition isnt triggered repeatedly
     public int level = 1;
 
-    public IEnumerator LoadNextLevel() // triggered by player hitting the win condition in movement.cs
+    private IEnumerator LoadLevel(int level)
     {
         isTransitioning = true;
         enabled = false;
@@ -26,16 +24,28 @@ public class levelManager : MonoBehaviour
         if (fader == null)
         {
             Debug.Log("fader reference is null in levelManager.cs");
-        } 
+        }
         else
         {
+            // Fade out before loading the next scene so the transition is visible.
             fader.FadeOut();
             yield return new WaitForSecondsRealtime(fader.FadeOutDuration);
         }
 
-        level++;
         SceneManager.LoadScene("Level " + level);
+        yield break;
     }
+
+    public IEnumerator LoadNextLevel() // triggered by player hitting the win condition in movement.cs
+    {
+        level++;
+        yield return LoadLevel(level);
+    }
+    public IEnumerator ReloadCurrentLevel() // triggered by player dying
+    {
+        yield return LoadLevel(level);
+    }
+
 
 
     void Awake()

@@ -4,7 +4,7 @@ public class gunCollectable : MonoBehaviour
 {
     [SerializeField] SpriteRenderer sr;
     [SerializeField] PickupPromptUI pickupPrompt;
-    [SerializeField] string pickupMessage = "Press P to pick up gun";
+    [SerializeField] string pickupMessage = "Press P to pick up gun.";
     bool playerInRange;
 
     void Awake()
@@ -53,20 +53,6 @@ public class gunCollectable : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (!other.CompareTag("Player"))
-        {
-            return;
-        }
-
-        playerInRange = true;
-
-        if (pickupPrompt != null)
-        {
-            pickupPrompt.Show(pickupMessage);
-        }
-    }
 
     void OnTriggerExit2D(Collider2D other)
     {

@@ -13,13 +13,15 @@ public class levelManager : MonoBehaviour
     
     [SerializeField] float zoomTarget = 3.5f;
     [SerializeField] float zoomDuration = 3.5f;
+    [SerializeField] lungePromptFader LungePromptScript;
+    Coroutine lungePromptRoutine;
     public bool isTransitioning; // used by the player so the win condition isnt triggered repeatedly
     public int level = 1;
+    public string lungeMessage = "Press 'Q' to do a lunge attack.";
 
     private IEnumerator LoadLevel(int level)
     {
         isTransitioning = true;
-        enabled = false;
 
         if (fader == null)
         {
@@ -33,7 +35,6 @@ public class levelManager : MonoBehaviour
         }
 
         SceneManager.LoadScene("Level " + level);
-        yield break;
     }
 
     public IEnumerator LoadNextLevel() // triggered by player hitting the win condition in movement.cs
@@ -77,18 +78,68 @@ public class levelManager : MonoBehaviour
 
     void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // These objects belong to the newly loaded scene, so reacquire them
+        // instead of retaining references from the scene that was unloaded.
         cam = FindObjectOfType<CinemachineVirtualCamera>();
         fader = FindObjectOfType<Fader>();
-        if (cam == null || fader == null)
+        LungePromptScript = FindObjectOfType<lungePromptFader>();
+
+        if (cam == null)
         {
-            Debug.Log("Camera or fader reference in levelManager.cs is not being found");
+            Debug.Log("Camera reference is not being found in levelManager.cs");
         }
-        // zooms in
-        cam.m_Lens.OrthographicSize = zoomStart;
-        StartCoroutine(SmoothZoomIn());
-        // fades in
-        fader.FadeIn();
-        
+        else
+        {
+            cam.m_Lens.OrthographicSize = zoomStart;
+            StartCoroutine(SmoothZoomIn());
+        }
+
+        if (fader == null)
+        {
+            Debug.Log("Fader reference is not being found in levelManager.cs");
+        }
+        else
+        {
+            fader.FadeIn();
+        }
+
+        if (lungePromptRoutine != null)
+        {
+            StopCoroutine(lungePromptRoutine);
+            lungePromptRoutine = null;
+        }
+
+        // The initial Level 1 load also comes through this method via Start().
+        if (scene.name == "Level 1" && LungePromptScript != null)
+        {
+            lungePromptRoutine = StartCoroutine(ShowLungePromptAfterFade());
+        }
+
+        isTransitioning = false;
+    }
+
+    IEnumerator ShowLungePromptAfterFade()
+    {
+        // Keep the prompt from being covered by the full-screen scene fader.
+        if (fader != null)
+        {
+            yield return new WaitForSecondsRealtime(fader.FadeInDuration);
+        }
+
+        if (LungePromptScript == null)
+        {
+            yield break;
+        }
+
+        LungePromptScript.Show(lungeMessage);
+        yield return new WaitForSecondsRealtime(3f);
+
+        if (LungePromptScript != null)
+        {
+            LungePromptScript.Hide();
+        }
+
+        lungePromptRoutine = null;
     }
 
     IEnumerator SmoothZoomIn()

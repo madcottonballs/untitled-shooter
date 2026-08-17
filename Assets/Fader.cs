@@ -30,6 +30,11 @@ public class Fader : MonoBehaviour
         get { return fadeOutDuration; }
     }
 
+    public float FadeInDuration
+    {
+        get { return fadeInDuration; }
+    }
+
     public void FadeIn()
     {
         // The overlay starts fully visible, then fades out on scene load.

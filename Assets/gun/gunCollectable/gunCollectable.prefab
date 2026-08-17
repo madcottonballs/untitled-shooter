@@ -99,6 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: -1887901514403833414}
+  pickupPrompt: {fileID: 0}
+  pickupMessage: Press P to pick up gun.
+  gunPrefab: {fileID: 221893693632000564, guid: 9e5a8df8ad8ebf746b23873bd940ebe7, type: 3}
 --- !u!61 &-5549812954879212457
 BoxCollider2D:
   m_ObjectHideFlags: 0

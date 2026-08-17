@@ -26,7 +26,7 @@ public class attack : MonoBehaviour
     public bool hasGun = false;
 
     SpriteRenderer gunSprite;
-    [SerializeField] gun gun;
+    public gun gun;
     levelManager levelManager;
 
     public int health = 325;
@@ -74,8 +74,6 @@ public class attack : MonoBehaviour
 
         if (hasGun)
         {
-            gunSprite.enabled = true;
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 gun.shoot();

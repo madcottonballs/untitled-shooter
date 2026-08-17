@@ -5,6 +5,7 @@ public class gunCollectable : MonoBehaviour
     [SerializeField] SpriteRenderer sr;
     [SerializeField] PickupPromptUI pickupPrompt;
     [SerializeField] string pickupMessage = "Press P to pick up gun.";
+    [SerializeField] GameObject gunPrefab;
     bool playerInRange;
 
     void Awake()
@@ -33,7 +34,20 @@ public class gunCollectable : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log("Player picked up gun");
+            Debug.Log("Player picked up gun"); // place holder
+
+            GameObject player = GameObject.FindGameObjectsWithTag("Player")[0];
+
+            attack playerAttackScript = player.GetComponent<attack>();
+
+
+            GameObject newGun = Instantiate(gunPrefab, player.transform);
+            gun newGunScript = newGun.GetComponent<gun>();
+
+            playerAttackScript.gun = newGunScript;
+
+            playerAttackScript.hasGun = true;
+
             Destroy(gameObject);
         }
     }

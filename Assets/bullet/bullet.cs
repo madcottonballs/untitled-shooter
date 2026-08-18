@@ -4,6 +4,13 @@ public class bullet : MonoBehaviour
 {
     public int damage = 250; 
     [SerializeField] float spawnStepForward = 0.75f;
+    Transform owner;
+
+    public void Initialize(Transform shooter, int bulletDamage)
+    {
+        owner = shooter;
+        damage = bulletDamage;
+    }
 
     void Start()
     {
@@ -12,6 +19,13 @@ public class bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // A projectile can spawn inside or very close to its shooter. Ignore the
+        // shooter and any colliders on that shooter's child objects.
+        if (owner != null && (other.transform == owner || other.transform.IsChildOf(owner)))
+        {
+            return;
+        }
+
         if (other.CompareTag("wall"))
         {
             Destroy(gameObject);

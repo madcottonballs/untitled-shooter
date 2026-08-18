@@ -34,7 +34,6 @@ public class gunCollectable : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log("Player picked up gun"); // place holder
 
             GameObject player = GameObject.FindGameObjectsWithTag("Player")[0];
 

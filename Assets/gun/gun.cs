@@ -101,7 +101,7 @@ public class gun : MonoBehaviour
         bullet bulletScript = bullet.GetComponent<bullet>();
 
         bulletRb.velocity = (Vector2)transform.right * bulletSpeed;
-        bulletScript.damage = bulletDamage; // sets the bullets damage to the bulletDamage
+        bulletScript.Initialize(parentTransform, bulletDamage);
 
 
         Destroy(bullet, bulletLifetime);

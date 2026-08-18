@@ -58,7 +58,6 @@ public class attack : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(health);
         // Press Q to trigger the lunge.
         if (Input.GetKeyDown(KeyCode.Q) && !isLunging && !isRecovering)
         {

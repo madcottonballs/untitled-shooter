@@ -16,7 +16,7 @@ public class levelManager : MonoBehaviour
     [SerializeField] lungePromptFader LungePromptScript;
     Coroutine lungePromptRoutine;
     public bool isTransitioning; // used by the player so the win condition isnt triggered repeatedly
-    public int level = 1;
+    public int level;
     public string lungeMessage = "Press 'Q' to do a lunge attack.";
 
     private IEnumerator LoadLevel(int level)
@@ -64,6 +64,13 @@ public class levelManager : MonoBehaviour
 
     void Start()
     {
+        { // this block sets the level number to be the number of the starting scene, because sometimes the level the player starts as isnt't level 1
+            string sceneName = SceneManager.GetActiveScene().name;
+            int levelNumber = int.Parse(sceneName.Replace("Level ", ""));
+
+            level = levelNumber;
+        }
+        
         HandleSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 

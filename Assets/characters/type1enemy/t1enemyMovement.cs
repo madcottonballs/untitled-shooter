@@ -9,7 +9,7 @@ public class t1enemyMovement : MonoBehaviour
 {
     public Transform[] points; // Patrol waypoints.
     public float speed = 2f; // Patrol and chase movement speed.
-    public attack Player; // Reference to the player's attack script.
+    private attack Player; // Reference to the player's attack script.
     public bool awareOfPlayer = false; // True once the enemy has noticed the player.
 
     Rigidbody2D rb; // Cached Rigidbody2D for movement.
@@ -39,6 +39,7 @@ public class t1enemyMovement : MonoBehaviour
         {
             player = temp.transform;
             playerMovement = temp.GetComponent<movement>();
+            Player = temp.GetComponent<attack>();
         }
     }
 
